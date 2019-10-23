@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     public float currentSpeed;
     public float touchRun;
     public float jumpSpeed;
-    public float speedOfPlayer = 10f;
+    public float speedOfPlayer;
 
     private Rigidbody2D rb;
     private float screenWidth;
@@ -25,8 +25,11 @@ public class PlayerController : MonoBehaviour
     private int numOfJumps;
     private int maxNumberOfJumps = 5;
 
-    PowerUpsManager pwManager;
+  
 
+    private float defaultSpeed;
+    private float maximumSpeed = 40f;
+    private float timer;
     
 
     private void Awake()
@@ -34,14 +37,27 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         screenWidth = Screen.width;
         myPlayerSpriteRenderer = GetComponent<SpriteRenderer>();
-        pwManager = FindObjectOfType<PowerUpsManager>();
+        
  
+    }
+    private void Start()
+    {
+        defaultSpeed = speedOfPlayer;
     }
 
     private void Update()
     {
+        timer += Time.deltaTime;
 
-
+        if(timer > 1)
+        {
+            if (speedOfPlayer < maximumSpeed)
+            {
+                speedOfPlayer += 0.5f;
+            }
+            timer = 0f;
+        }
+      
         Vector2 newVelocity = rb.velocity;
         newVelocity.x = speedOfPlayer;
         rb.velocity = newVelocity;
@@ -98,31 +114,42 @@ public class PlayerController : MonoBehaviour
         {
             if (myPlayerSpriteRenderer.color != collision.gameObject.GetComponent<SpriteRenderer>().color )
             {
+                speedOfPlayer = defaultSpeed;
+                myPlayerSpriteRenderer.color = colors[0];
                 GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
+               
                 
             }
         }
 
         if (collision.collider.tag == "deathCatcher")
         {
+            speedOfPlayer = defaultSpeed;
+            myPlayerSpriteRenderer.color = colors[0];
             GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
-            pwManager.powerUpActive = false;
+            
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
     {
         if (collision.collider.tag == "deathCatcher")
         {
+            speedOfPlayer = defaultSpeed;
+            myPlayerSpriteRenderer.color = colors[0];
             GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
-            pwManager.powerUpActive = false;
+           
+       
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
         if (collision.collider.tag == "deathCatcher")
         {
+            myPlayerSpriteRenderer.color = colors[0];
+            speedOfPlayer = defaultSpeed;
             GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
-            pwManager.powerUpActive = false;
+            
+           
         }
     }
 

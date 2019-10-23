@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     public DeathMenu deathMenu;
     public AudioSource myAudioSource;
+    PowerUps powerups;
    
                  
     void Start()
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
         playerStartPoint = thePlayer.transform.position;
         scoreManager = FindObjectOfType<ScoreManager>();
         myAudioSource = GetComponent<AudioSource>();
+        powerups = FindObjectOfType<PowerUps>();
         //audioPlay = true;
 
     }
@@ -52,6 +54,7 @@ public class GameManager : MonoBehaviour
         scoreManager.scoreCount = 0;
         scoreManager.scoreIncreasing = true;
         myAudioSource.Play();
+        //powerups.gameObject.SetActive(true);
     }
 
    
