@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
 
     public DeathMenu deathMenu;
     public AudioSource myAudioSource;
-    bool audioPlay;
+   
                  
     void Start()
     {
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
         playerStartPoint = thePlayer.transform.position;
         scoreManager = FindObjectOfType<ScoreManager>();
         myAudioSource = GetComponent<AudioSource>();
-        audioPlay = true;
+        //audioPlay = true;
 
     }
 

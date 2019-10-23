@@ -23,18 +23,25 @@ public class PlayerController : MonoBehaviour
     public float jumpForce = 800f;
 
     private int numOfJumps;
-    private int maxNumberOfJumps = 3;
+    private int maxNumberOfJumps = 5;
+
+    PowerUpsManager pwManager;
+
+    
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         screenWidth = Screen.width;
         myPlayerSpriteRenderer = GetComponent<SpriteRenderer>();
+        pwManager = FindObjectOfType<PowerUpsManager>();
  
     }
 
     private void Update()
     {
+
+
         Vector2 newVelocity = rb.velocity;
         newVelocity.x = speedOfPlayer;
         rb.velocity = newVelocity;
@@ -84,9 +91,6 @@ public class PlayerController : MonoBehaviour
         jump = false; 
     }
 
-
-    //DEATH
-    //COLOR CHECK
     private void OnCollisionEnter2D(Collision2D collision)
     {
         //COLOR CHECK
@@ -95,12 +99,14 @@ public class PlayerController : MonoBehaviour
             if (myPlayerSpriteRenderer.color != collision.gameObject.GetComponent<SpriteRenderer>().color )
             {
                 GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
+                
             }
         }
 
         if (collision.collider.tag == "deathCatcher")
         {
             GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
+            pwManager.powerUpActive = false;
         }
     }
     private void OnCollisionStay2D(Collision2D collision)
@@ -108,6 +114,7 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.tag == "deathCatcher")
         {
             GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
+            pwManager.powerUpActive = false;
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
@@ -115,6 +122,7 @@ public class PlayerController : MonoBehaviour
         if (collision.collider.tag == "deathCatcher")
         {
             GameObject.Find("GameManager").GetComponent<GameManager>().RestartGame();
+            pwManager.powerUpActive = false;
         }
     }
 
@@ -134,3 +142,4 @@ public class PlayerController : MonoBehaviour
 
 
 
+ 
